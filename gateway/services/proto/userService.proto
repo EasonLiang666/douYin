@@ -1,6 +1,8 @@
 syntax="proto2";
 package services;
 import "user.proto";
+import "friendUser.proto";
+import "message.proto";
 option go_package="./;protos";
 
 message UserRequest {
@@ -38,8 +40,81 @@ message UserRegisterResponse {
   required string token = 4; // 用户鉴权token
 }
 
+message MessageChatRequest {
+  required string token = 1; // 用户鉴权token
+  required int64 to_user_id = 2; // 对方用户id
+}
+
+message MessageChatResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+  repeated Message message_list = 3; // 消息列表
+}
+
+message RelationMessageRequest {
+  required string token = 1; // 用户鉴权token
+  required int64 to_user_id = 2; // 对方用户id
+  required int32 action_type = 3; // 1-发送消息
+  required string content = 4; // 消息内容
+}
+
+message RelationMessageResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+}
+
+message RelationActionRequest {
+  required string token = 1; // 用户鉴权token
+  required int64 to_user_id = 2; // 对方用户id
+  required int32 action_type = 3; // 1-关注，2-取消关注
+}
+
+message RelationActionResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+}
+
+message RelationFollowListRequest {
+  required int64 user_id = 1; // 用户id
+  required string token = 2; // 用户鉴权token
+}
+
+message RelationFollowListResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+  repeated User user_list = 3; // 用户信息列表
+}
+
+message RelationFollowerListRequest {
+  required int64 user_id = 1; // 用户id
+  required string token = 2; // 用户鉴权token
+}
+
+message RelationFollowerListResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+  repeated User user_list = 3; // 用户列表
+}
+
+message RelationFriendListRequest {
+  required int64 user_id = 1; // 用户id
+  required string token = 2; // 用户鉴权token
+}
+
+message RelationFriendListResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+  repeated FriendUser user_list = 3; // 用户列表
+}
+
 service UserService{
   rpc UserInfo(UserRequest) returns(UserResponse);
   rpc UserLogin(UserLoginRequest) returns(UserLoginResponse);
   rpc UserRegister(UserRegisterRequest) returns(UserRegisterResponse);
+  rpc MessageChatRecord(MessageChatRequest) returns(MessageChatResponse);
+  rpc SendMessage(RelationMessageRequest) returns(RelationMessageResponse);
+  rpc RelationAction(RelationActionRequest) returns(RelationActionResponse);
+  rpc FollowList(RelationFollowListRequest) returns(RelationFollowListResponse);
+  rpc FollowerList(RelationFollowerListRequest) returns(RelationFollowerListResponse);
+  rpc FriendList(RelationFriendListRequest) returns(RelationFriendListResponse);
 }

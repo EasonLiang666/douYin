@@ -45,6 +45,12 @@ type UserService interface {
 	UserInfo(ctx context.Context, in *UserRequest, opts ...client.CallOption) (*UserResponse, error)
 	UserLogin(ctx context.Context, in *UserLoginRequest, opts ...client.CallOption) (*UserLoginResponse, error)
 	UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...client.CallOption) (*UserRegisterResponse, error)
+	MessageChatRecord(ctx context.Context, in *MessageChatRequest, opts ...client.CallOption) (*MessageChatResponse, error)
+	SendMessage(ctx context.Context, in *RelationMessageRequest, opts ...client.CallOption) (*RelationMessageResponse, error)
+	RelationAction(ctx context.Context, in *RelationActionRequest, opts ...client.CallOption) (*RelationActionResponse, error)
+	FollowList(ctx context.Context, in *RelationFollowListRequest, opts ...client.CallOption) (*RelationFollowListResponse, error)
+	FollowerList(ctx context.Context, in *RelationFollowerListRequest, opts ...client.CallOption) (*RelationFollowerListResponse, error)
+	FriendList(ctx context.Context, in *RelationFriendListRequest, opts ...client.CallOption) (*RelationFriendListResponse, error)
 }
 
 type userService struct {
@@ -89,12 +95,78 @@ func (c *userService) UserRegister(ctx context.Context, in *UserRegisterRequest,
 	return out, nil
 }
 
+func (c *userService) MessageChatRecord(ctx context.Context, in *MessageChatRequest, opts ...client.CallOption) (*MessageChatResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.MessageChatRecord", in)
+	out := new(MessageChatResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) SendMessage(ctx context.Context, in *RelationMessageRequest, opts ...client.CallOption) (*RelationMessageResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.SendMessage", in)
+	out := new(RelationMessageResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) RelationAction(ctx context.Context, in *RelationActionRequest, opts ...client.CallOption) (*RelationActionResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.RelationAction", in)
+	out := new(RelationActionResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) FollowList(ctx context.Context, in *RelationFollowListRequest, opts ...client.CallOption) (*RelationFollowListResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.FollowList", in)
+	out := new(RelationFollowListResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) FollowerList(ctx context.Context, in *RelationFollowerListRequest, opts ...client.CallOption) (*RelationFollowerListResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.FollowerList", in)
+	out := new(RelationFollowerListResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userService) FriendList(ctx context.Context, in *RelationFriendListRequest, opts ...client.CallOption) (*RelationFriendListResponse, error) {
+	req := c.c.NewRequest(c.name, "UserService.FriendList", in)
+	out := new(RelationFriendListResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for UserService service
 
 type UserServiceHandler interface {
 	UserInfo(context.Context, *UserRequest, *UserResponse) error
 	UserLogin(context.Context, *UserLoginRequest, *UserLoginResponse) error
 	UserRegister(context.Context, *UserRegisterRequest, *UserRegisterResponse) error
+	MessageChatRecord(context.Context, *MessageChatRequest, *MessageChatResponse) error
+	SendMessage(context.Context, *RelationMessageRequest, *RelationMessageResponse) error
+	RelationAction(context.Context, *RelationActionRequest, *RelationActionResponse) error
+	FollowList(context.Context, *RelationFollowListRequest, *RelationFollowListResponse) error
+	FollowerList(context.Context, *RelationFollowerListRequest, *RelationFollowerListResponse) error
+	FriendList(context.Context, *RelationFriendListRequest, *RelationFriendListResponse) error
 }
 
 func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
@@ -102,6 +174,12 @@ func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts .
 		UserInfo(ctx context.Context, in *UserRequest, out *UserResponse) error
 		UserLogin(ctx context.Context, in *UserLoginRequest, out *UserLoginResponse) error
 		UserRegister(ctx context.Context, in *UserRegisterRequest, out *UserRegisterResponse) error
+		MessageChatRecord(ctx context.Context, in *MessageChatRequest, out *MessageChatResponse) error
+		SendMessage(ctx context.Context, in *RelationMessageRequest, out *RelationMessageResponse) error
+		RelationAction(ctx context.Context, in *RelationActionRequest, out *RelationActionResponse) error
+		FollowList(ctx context.Context, in *RelationFollowListRequest, out *RelationFollowListResponse) error
+		FollowerList(ctx context.Context, in *RelationFollowerListRequest, out *RelationFollowerListResponse) error
+		FriendList(ctx context.Context, in *RelationFriendListRequest, out *RelationFriendListResponse) error
 	}
 	type UserService struct {
 		userService
@@ -124,4 +202,28 @@ func (h *userServiceHandler) UserLogin(ctx context.Context, in *UserLoginRequest
 
 func (h *userServiceHandler) UserRegister(ctx context.Context, in *UserRegisterRequest, out *UserRegisterResponse) error {
 	return h.UserServiceHandler.UserRegister(ctx, in, out)
+}
+
+func (h *userServiceHandler) MessageChatRecord(ctx context.Context, in *MessageChatRequest, out *MessageChatResponse) error {
+	return h.UserServiceHandler.MessageChatRecord(ctx, in, out)
+}
+
+func (h *userServiceHandler) SendMessage(ctx context.Context, in *RelationMessageRequest, out *RelationMessageResponse) error {
+	return h.UserServiceHandler.SendMessage(ctx, in, out)
+}
+
+func (h *userServiceHandler) RelationAction(ctx context.Context, in *RelationActionRequest, out *RelationActionResponse) error {
+	return h.UserServiceHandler.RelationAction(ctx, in, out)
+}
+
+func (h *userServiceHandler) FollowList(ctx context.Context, in *RelationFollowListRequest, out *RelationFollowListResponse) error {
+	return h.UserServiceHandler.FollowList(ctx, in, out)
+}
+
+func (h *userServiceHandler) FollowerList(ctx context.Context, in *RelationFollowerListRequest, out *RelationFollowerListResponse) error {
+	return h.UserServiceHandler.FollowerList(ctx, in, out)
+}
+
+func (h *userServiceHandler) FriendList(ctx context.Context, in *RelationFriendListRequest, out *RelationFriendListResponse) error {
+	return h.UserServiceHandler.FriendList(ctx, in, out)
 }
