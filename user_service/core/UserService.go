@@ -19,21 +19,33 @@ func (*UserService) UserLogin(ctx context.Context, req *services.UserLoginReques
 func (*UserService) UserRegister(ctx context.Context, req *services.UserRegisterRequest, resp *services.UserRegisterResponse) error {
 	return nil
 }
-func (*UserService) MessageChatRecord(ctx context.Context, req *services.UserRegisterRequest, resp *services.UserRegisterResponse) error {
+
+//消息记录
+func (*UserService) MessageChatRecord(ctx context.Context, req *services.MessageChatRequest, resp *services.MessageChatResponse) error {
 	return nil
 }
-func (*UserService) SendMessage(ctx context.Context, req *services.UserRegisterRequest, resp *services.UserRegisterResponse) error {
+
+//发送消息
+func (*UserService) SendMessage(ctx context.Context, req *services.RelationMessageRequest, resp *services.RelationMessageResponse) error {
 	return nil
 }
-func (*UserService) RelationAction(ctx context.Context, req *services.UserRegisterRequest, resp *services.UserRegisterResponse) error {
+
+//关注/取关
+func (*UserService) RelationAction(ctx context.Context, req *services.RelationActionRequest, resp *services.RelationActionResponse) error {
 	return nil
 }
-func (*UserService) FollowList(ctx context.Context, req *services.UserRegisterRequest, resp *services.UserRegisterResponse) error {
+
+//关注列表
+func (*UserService) FollowList(ctx context.Context, req *services.RelationFollowListRequest, resp *services.RelationFollowListResponse) error {
 	return nil
 }
-func (*UserService) FollowerList(ctx context.Context, req *services.UserRegisterRequest, resp *services.UserRegisterResponse) error {
+
+//粉丝列表
+func (*UserService) FollowerList(ctx context.Context, req *services.RelationFollowerListRequest, resp *services.RelationFollowerListResponse) error {
 	return nil
 }
-func (*UserService) FriendList(ctx context.Context, req *services.UserRegisterRequest, resp *services.UserRegisterResponse) error {
+
+//朋友列表
+func (*UserService) FriendList(ctx context.Context, req *services.RelationFriendListRequest, resp *services.RelationFriendListResponse) error {
 	return nil
 }

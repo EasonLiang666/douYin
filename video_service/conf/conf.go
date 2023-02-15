@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/go-ini/ini"
 	"strings"
-	"video/model"
+	"video_service/model"
 )
 
 var (

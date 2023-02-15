@@ -6,10 +6,14 @@ package services
 import (
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	math "math"
+)
+
+import (
+	context "context"
 	"github.com/micro/go-micro/v2/api"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/server"
-	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.

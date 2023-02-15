@@ -1,25 +1,41 @@
 package core
 
-import "context"
+import (
+	"context"
+	"video_service/services"
+)
 
-func (*VideoService) CreateTask(ctx context.Context, req *services.TaskRequest, resp *services.TaskDetailResponse) error {
-
+//视频流
+func (*VideoService) FeedInfo(ctx context.Context, req *services.FeedRequest, resp *services.FeedResponse) error {
+	return nil
 }
-func (*VideoService) CreateTask(ctx context.Context, req *services.TaskRequest, resp *services.TaskDetailResponse) error {
 
+//发布视频
+func (*VideoService) PublishAction(ctx context.Context, req *services.PublishActionRequest, resp *services.PublishActionResponse) error {
+	return nil
 }
-func (*VideoService) CreateTask(ctx context.Context, req *services.TaskRequest, resp *services.TaskDetailResponse) error {
 
+//自己的发布视频列表
+func (*VideoService) PublishList(ctx context.Context, req *services.PublishListRequest, resp *services.PublishListResponse) error {
+	return nil
 }
-func (*VideoService) CreateTask(ctx context.Context, req *services.TaskRequest, resp *services.TaskDetailResponse) error {
 
+//点赞/取消点赞
+func (*VideoService) FavoriteAction(ctx context.Context, req *services.FavoriteActionRequest, resp *services.FavoriteActionResponse) error {
+	return nil
 }
-func (*VideoService) CreateTask(ctx context.Context, req *services.TaskRequest, resp *services.TaskDetailResponse) error {
 
+//点赞列表
+func (*VideoService) FavoriteList(ctx context.Context, req *services.FavoriteListRequest, resp *services.FavoriteListResponse) error {
+	return nil
 }
-func (*VideoService) CreateTask(ctx context.Context, req *services.TaskRequest, resp *services.TaskDetailResponse) error {
 
+//评论
+func (*VideoService) CommentAction(ctx context.Context, req *services.CommentActionRequest, resp *services.CommentActionResponse) error {
+	return nil
 }
-func (*VideoService) CreateTask(ctx context.Context, req *services.TaskRequest, resp *services.TaskDetailResponse) error {
 
+//评论列表
+func (*VideoService) CommentList(ctx context.Context, req *services.CommentListRequest, resp *services.CommentListResponse) error {
+	return nil
 }

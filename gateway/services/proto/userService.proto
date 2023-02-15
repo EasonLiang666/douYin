@@ -1,0 +1,45 @@
+syntax="proto2";
+package services;
+import "user.proto";
+option go_package="./;protos";
+
+message UserRequest {
+  required int64 user_id = 1; // 用户id
+  required string token = 2; // 用户鉴权token
+}
+
+message UserResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+  required User user = 3; // 用户信息
+}
+
+message UserLoginRequest {
+  required string username = 1; // 登录用户名
+  required string password = 2; // 登录密码
+}
+
+message UserLoginResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+  required int64 user_id = 3; // 用户id
+  required string token = 4; // 用户鉴权token
+}
+
+message UserRegisterRequest {
+  required string username = 1; // 注册用户名，最长32个字符
+  required string password = 2; // 密码，最长32个字符
+}
+
+message UserRegisterResponse {
+  required int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  optional string status_msg = 2; // 返回状态描述
+  required int64 user_id = 3; // 用户id
+  required string token = 4; // 用户鉴权token
+}
+
+service UserService{
+  rpc UserInfo(UserRequest) returns(UserResponse);
+  rpc UserLogin(UserLoginRequest) returns(UserLoginResponse);
+  rpc UserRegister(UserRegisterRequest) returns(UserRegisterResponse);
+}
