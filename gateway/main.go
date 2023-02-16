@@ -28,7 +28,7 @@ func main() {
 		micro.Name("videoService.client"),
 		micro.WrapClient(wrappers.NewVideoWrapper),
 	)
-	videoService := services.NewVideoService("rpcTaskService", videoMicroService.Client())
+	videoService := services.NewVideoService("rpcVideoService", videoMicroService.Client())
 
 	//创建微服务实例，使用gin暴露http接口并注册到etcd
 	server := web.NewService(

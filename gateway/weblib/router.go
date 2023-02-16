@@ -22,7 +22,7 @@ func NewRouter(service ...interface{}) *gin.Engine {
 		})
 
 		//Feed
-		douyin.POST("/feed", handlers.FeedInfo)
+		douyin.GET("/feed", handlers.FeedInfo)
 
 		// 用户服务
 		douyin.POST("/user/register", handlers.UserRegister)

@@ -7,6 +7,9 @@ import (
 
 //视频流
 func (*VideoService) FeedInfo(ctx context.Context, req *services.FeedRequest, resp *services.FeedResponse) error {
+	resp.StatusCode = 1
+	resp.StatusMsg = "okk"
+
 	return nil
 }
 

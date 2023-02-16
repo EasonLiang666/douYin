@@ -1,10 +1,29 @@
 package handlers
 
-import "github.com/gin-gonic/gin"
+import (
+	"context"
+	"gateway/services"
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
 
 //视频流
 func FeedInfo(ginCtx *gin.Context) {
+	//允许传参username,password为空
+	var feedReq services.FeedRequest
+	PanicIfUserError(ginCtx.Bind(&feedReq))
+	// 从gin.Key中取出服务实例
+	videoService := ginCtx.Keys["videoService"].(services.VideoService)
 
+	feedResp, err := videoService.FeedInfo(context.Background(), &feedReq)
+	PanicIfUserError(err)
+	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
+	ginCtx.JSON(http.StatusOK, gin.H{
+		"status_code": feedResp.StatusCode,
+		"status_msg":  feedResp.StatusMsg,
+		//"video_list":     feedResp.VideoList,
+		//"next_time":       feedResp.NextTime,
+	})
 }
 
 //发布视频
