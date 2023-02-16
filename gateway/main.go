@@ -24,11 +24,11 @@ func main() {
 	userService := services.NewUserService("rpcUserService", userMicroService.Client())
 
 	// Video视频
-	taskMicroService := micro.NewService(
+	videoMicroService := micro.NewService(
 		micro.Name("videoService.client"),
 		micro.WrapClient(wrappers.NewVideoWrapper),
 	)
-	videoService := services.NewVideoService("rpcTaskService", taskMicroService.Client())
+	videoService := services.NewVideoService("rpcTaskService", videoMicroService.Client())
 
 	//创建微服务实例，使用gin暴露http接口并注册到etcd
 	server := web.NewService(

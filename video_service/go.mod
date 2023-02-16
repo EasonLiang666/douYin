@@ -8,6 +8,7 @@ require (
 	github.com/golang/protobuf v1.5.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/micro/go-micro/v2 v2.9.1
+	github.com/micro/micro/v3 v3.16.0 // indirect
 	google.golang.org/protobuf v1.28.1
 )
 

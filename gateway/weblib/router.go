@@ -45,11 +45,6 @@ func NewRouter(service ...interface{}) *gin.Engine {
 			authed.POST("relation/friend/list/", handlers.FriendList)
 			authed.POST("message/action/", handlers.SendMessage)
 			authed.POST("message/chat/", handlers.MessageChatRecord)
-			//	authed.GET("tasks", handlers.GetTaskList)
-			//	authed.POST("task", handlers.CreateTask)
-			//	authed.GET("task/:id", handlers.GetTaskDetail) // task_id
-			//	authed.PUT("task/:id", handlers.UpdateTask)    // task_id
-			//	authed.DELETE("task/:id", handlers.DeleteTask) // task_id
 		}
 	}
 	return ginRouter

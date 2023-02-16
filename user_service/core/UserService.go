@@ -3,6 +3,8 @@ package core
 import (
 	"context"
 	"douYin/user_service/services"
+	"douYin/user_service/utils"
+	"strconv"
 )
 
 //用户信息
@@ -17,6 +19,16 @@ func (*UserService) UserLogin(ctx context.Context, req *services.UserLoginReques
 
 //用户注册
 func (*UserService) UserRegister(ctx context.Context, req *services.UserRegisterRequest, resp *services.UserRegisterResponse) error {
+	resp.StatusCode = 1
+	resp.StatusMsg = "ok"
+	resp.UserId = 1
+	int, err := strconv.Atoi("123")
+	if err != nil {
+		panic(err)
+	}
+	token, err := utils.GenerateToken(uint(int))
+	resp.Token = token
+
 	return nil
 }
 
