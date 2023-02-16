@@ -17,27 +17,40 @@ func NewRouter(service ...interface{}) *gin.Engine {
 	douyin := ginRouter.Group("/douyin")
 	{
 		//测试
-		douyin.GET("ping", func(context *gin.Context) {
+		douyin.GET("/ping", func(context *gin.Context) {
 			context.JSON(200, "success")
 		})
 
 		//Feed
-		//douyin.GET("/feed",)
+		douyin.POST("/feed", handlers.FeedInfo)
+
 		// 用户服务
-		douyin.POST("/user", handlers.UserInfo)
 		douyin.POST("/user/register", handlers.UserRegister)
 		douyin.POST("/user/login", handlers.UserLogin)
 
-		//// 需要登录保护
-		//authed := douyin.Group("/")
-		//authed.Use(middleware.JWT())
-		//{
-		//	authed.GET("tasks", handlers.GetTaskList)
-		//	authed.POST("task", handlers.CreateTask)
-		//	authed.GET("task/:id", handlers.GetTaskDetail) // task_id
-		//	authed.PUT("task/:id", handlers.UpdateTask)    // task_id
-		//	authed.DELETE("task/:id", handlers.DeleteTask) // task_id
-		//}
+		// 需要登录保护
+		authed := douyin.Group("/")
+		authed.Use(middleware.JWT())
+		{
+			authed.POST("user", handlers.UserInfo)
+			authed.POST("publish/action/", handlers.PublishAction)
+			authed.POST("publish/list/", handlers.PublishList)
+			authed.POST("favorite/action/", handlers.PublishAction)
+			authed.POST("favorite/list/", handlers.FavoriteList)
+			authed.POST("comment/action/", handlers.CommentAction)
+			authed.POST("comment/list/", handlers.CommentList)
+			authed.POST("relation/action/", handlers.RelationAction)
+			authed.POST("relation/follow/list/", handlers.FollowList)
+			authed.POST("relation/follower/list/", handlers.FollowerList)
+			authed.POST("relation/friend/list/", handlers.FriendList)
+			authed.POST("message/action/", handlers.SendMessage)
+			authed.POST("message/chat/", handlers.MessageChatRecord)
+			//	authed.GET("tasks", handlers.GetTaskList)
+			//	authed.POST("task", handlers.CreateTask)
+			//	authed.GET("task/:id", handlers.GetTaskDetail) // task_id
+			//	authed.PUT("task/:id", handlers.UpdateTask)    // task_id
+			//	authed.DELETE("task/:id", handlers.DeleteTask) // task_id
+		}
 	}
 	return ginRouter
 }
