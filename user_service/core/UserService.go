@@ -2,12 +2,12 @@ package core
 
 import (
 	"context"
-	"douYin/user_service/model"
-	"douYin/user_service/services"
-	"douYin/user_service/utils"
 	"math/rand"
 	"strconv"
 	"time"
+	"user_service/model"
+	"user_service/services"
+	"user_service/utils"
 )
 
 //用户信息

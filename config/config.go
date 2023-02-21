@@ -10,6 +10,7 @@ import "time"
 //const PortSSH = 22
 //const MaxMsgCount = 100
 //const SSHHeartbeatTime = 10 * 60
+const Secret = "TikTok"
 
 var ExpireTime = time.Hour * 48 // 设置Redis数据热度消散时间。
 

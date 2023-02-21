@@ -3,10 +3,10 @@ package weblib
 import (
 	"gateway/weblib/handlers"
 	"gateway/weblib/middleware"
-	"github.com/gin-gonic/gin"
-
+	"gateway/weblib/middleware/jwt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/gin"
 )
 
 func NewRouter(service ...interface{}) *gin.Engine {
@@ -21,31 +21,22 @@ func NewRouter(service ...interface{}) *gin.Engine {
 			context.JSON(200, "success")
 		})
 
-		//Feed
-		douyin.GET("/feed", handlers.FeedInfo)
+		douyin.GET("/feed/", jwt.AuthWithoutLogin(), handlers.FeedInfo)
+		douyin.POST("/publish/action/", jwt.AuthBody(), handlers.PublishAction)
+		douyin.GET("/publish/list/", jwt.Auth(), handlers.PublishList)
+		douyin.GET("/user/", jwt.Auth(), handlers.UserInfo)
+		douyin.POST("/user/register/", handlers.UserRegister)
+		douyin.POST("/user/login/", handlers.UserLogin)
 
-		// 用户服务
-		douyin.POST("/user/register", handlers.UserRegister)
-		douyin.POST("/user/login", handlers.UserLogin)
+		douyin.POST("/favorite/action/", jwt.Auth(), handlers.PublishAction)
+		douyin.GET("/favorite/list/", jwt.Auth(), handlers.FavoriteList)
+		douyin.POST("/comment/action/", jwt.Auth(), handlers.CommentAction)
+		douyin.GET("/comment/list/", jwt.AuthWithoutLogin(), handlers.CommentList)
 
-		// 需要登录保护
-		authed := douyin.Group("/")
-		authed.Use(middleware.JWT())
-		{
-			authed.POST("user", handlers.UserInfo)
-			authed.POST("publish/action/", handlers.PublishAction)
-			authed.POST("publish/list/", handlers.PublishList)
-			authed.POST("favorite/action/", handlers.PublishAction)
-			authed.POST("favorite/list/", handlers.FavoriteList)
-			authed.POST("comment/action/", handlers.CommentAction)
-			authed.POST("comment/list/", handlers.CommentList)
-			authed.POST("relation/action/", handlers.RelationAction)
-			authed.POST("relation/follow/list/", handlers.FollowList)
-			authed.POST("relation/follower/list/", handlers.FollowerList)
-			authed.POST("relation/friend/list/", handlers.FriendList)
-			authed.POST("message/action/", handlers.SendMessage)
-			authed.POST("message/chat/", handlers.MessageChatRecord)
-		}
+		douyin.POST("/relation/action/", jwt.Auth(), handlers.RelationAction)
+		douyin.GET("/relation/follow/list/", jwt.Auth(), handlers.FollowList)
+		douyin.GET("/relation/follower/list", jwt.Auth(), handlers.FollowerList)
+
 	}
 	return ginRouter
 }

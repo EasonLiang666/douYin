@@ -4,13 +4,13 @@ import (
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/registry/etcd"
-	"video_service/conf"
+	"video_service/config"
 	"video_service/core"
 	"video_service/services"
 )
 
 func main() {
-	conf.Init()
+	config.Init()
 	// etcd注册件
 	etcdReg := etcd.NewRegistry(
 		registry.Addrs("127.0.0.1:2379"), // 127.0.0.1:2379 是 etcd 服务注册中心的默认地址
