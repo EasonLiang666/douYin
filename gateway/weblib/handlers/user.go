@@ -90,20 +90,60 @@ func SendMessage(ginCtx *gin.Context) {
 
 //关注/取关
 func RelationAction(ginCtx *gin.Context) {
+	var relationActionRequest services.RelationActionRequest
+	PanicIfUserError(ginCtx.Bind(&relationActionRequest))
+	userService := ginCtx.Keys["userService"].(services.UserService)
 
+	userResp, err := userService.RelationAction(context.Background(), &relationActionRequest)
+	PanicIfUserError(err)
+	ginCtx.JSON(http.StatusOK, gin.H{
+		"status_code": userResp.StatusCode,
+		"status_msg":  userResp.StatusMsg,
+	})
 }
 
 //关注列表
 func FollowList(ginCtx *gin.Context) {
+	var relationFollowListRequest services.RelationFollowListRequest
+	PanicIfUserError(ginCtx.Bind(&relationFollowListRequest))
+	userService := ginCtx.Keys["userService"].(services.UserService)
+
+	userResp, err := userService.FollowList(context.Background(), &relationFollowListRequest)
+	PanicIfUserError(err)
+	ginCtx.JSON(http.StatusOK, gin.H{
+		"status_code": userResp.StatusCode,
+		"status_msg":  userResp.StatusMsg,
+		"user_list":   userResp.UserList,
+	})
 
 }
 
 //粉丝列表
 func FollowerList(ginCtx *gin.Context) {
+	var relationFollowerListRequest services.RelationFollowerListRequest
+	PanicIfUserError(ginCtx.Bind(&relationFollowerListRequest))
+	userService := ginCtx.Keys["userService"].(services.UserService)
 
+	userResp, err := userService.FollowerList(context.Background(), &relationFollowerListRequest)
+	PanicIfUserError(err)
+	ginCtx.JSON(http.StatusOK, gin.H{
+		"status_code": userResp.StatusCode,
+		"status_msg":  userResp.StatusMsg,
+		"user_list":   userResp.UserList,
+	})
 }
 
 //朋友列表
 func FriendList(ginCtx *gin.Context) {
+	var relationFriendListRequest services.RelationFriendListRequest
+	PanicIfUserError(ginCtx.Bind(&relationFriendListRequest))
+	userService := ginCtx.Keys["userService"].(services.UserService)
 
+	userResp, err := userService.FriendList(context.Background(), &relationFriendListRequest)
+	PanicIfUserError(err)
+	ginCtx.JSON(http.StatusOK, gin.H{
+		"status_code": userResp.StatusCode,
+		"status_msg":  userResp.StatusMsg,
+		"user_list":   userResp.UserList,
+	})
 }

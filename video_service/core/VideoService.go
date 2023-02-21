@@ -25,6 +25,7 @@ func (*VideoService) PublishList(ctx context.Context, req *services.PublishListR
 
 //点赞/取消点赞
 func (*VideoService) FavoriteAction(ctx context.Context, req *services.FavoriteActionRequest, resp *services.FavoriteActionResponse) error {
+
 	return nil
 }
 
