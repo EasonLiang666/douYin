@@ -3,7 +3,6 @@ package core
 import (
 	"context"
 	"math/rand"
-	"strconv"
 	"time"
 	"user_service/model"
 	"user_service/services"
@@ -13,14 +12,15 @@ import (
 //用户信息
 func (*UserService) UserInfo(ctx context.Context, req *services.UserRequest, resp *services.UserResponse) error {
 
-	var users model.NewUser
 	var user1 = resp.User
-	model.DB.Where("Id = ? AND Token = ?", req.UserId, req.Token).Find(&users)
-	if users.Name != "" {
-		model.DB.Where("Id = ? ", req.UserId).Find(&user1)
+
+	model.DB.Where("Id = ? ", req.UserId).Find(&user1)
+	if user1.Id != 0 {
 		resp.StatusCode = 0
 		resp.User = user1
 		resp.StatusMsg = "ok"
+	} else {
+		resp.StatusCode = 1
 	}
 	return nil
 }
@@ -28,12 +28,17 @@ func (*UserService) UserInfo(ctx context.Context, req *services.UserRequest, res
 //用户登录
 func (*UserService) UserLogin(ctx context.Context, req *services.UserLoginRequest, resp *services.UserLoginResponse) error {
 	var user model.NewUser
+	var int = int(resp.UserId)
+	token := ""
+	token, _ = utils.GenerateToken(uint(int))
 	model.DB.Where(" Password =? AND Name = ? ", req.Password, req.Username).Find(&user)
 	if user.Id != 0 {
 		resp.StatusCode = 0
 		resp.StatusMsg = "ok"
 		resp.UserId = user.Id
-		resp.Token = user.Token
+		resp.Token = token
+	} else {
+		resp.StatusCode = 1
 	}
 	return nil
 }
@@ -44,7 +49,7 @@ func (*UserService) UserRegister(ctx context.Context, req *services.UserRegister
 	// 以时间作为种子，确保每次运行的结果不同
 	rand.Seed(time.Now().UnixNano())
 	// 生成一个介于 0 和 100 之间的不重复的随机数序列
-	nums := rand.Intn(101)
+	nums := rand.Intn(99)
 	user := &model.User{
 		Id:            int64(nums),
 		Name:          req.Username,
@@ -52,28 +57,23 @@ func (*UserService) UserRegister(ctx context.Context, req *services.UserRegister
 		FollowerCount: 0,
 		IsFollow:      false,
 	}
-
 	err2 := model.DB.Create(user)
 	if err2 != nil {
 		resp.StatusCode = 0
 		resp.StatusMsg = "ok"
 		resp.UserId = int64(nums)
-		var int, err1 = strconv.Atoi(string(resp.UserId))
-		if err1 != nil {
-			panic(err1)
-		}
+		var int = int(resp.UserId)
 		token, _ := utils.GenerateToken(uint(int))
 		resp.Token = token
 		user1 := &model.NewUser{
 			Id:       int64(nums),
 			Name:     req.Username,
 			Password: req.Password,
-			Token:    token,
 		}
 		_ = model.DB.Create(user1)
 	} else {
 		resp.StatusCode = 1
-		resp.StatusMsg = "error"
+
 	}
 	return nil
 }
@@ -90,6 +90,8 @@ func (*UserService) MessageChatRecord(ctx context.Context, req *services.Message
 		}
 		resp.StatusCode = 0
 		resp.StatusMsg = "ok"
+	} else {
+		resp.StatusCode = 1
 	}
 	return nil
 }
@@ -100,7 +102,7 @@ func (*UserService) SendMessage(ctx context.Context, req *services.RelationMessa
 	// 生成一个介于 0 和 100 之间的不重复的随机数序列
 	nums := rand.Intn(1001)
 	var user model.NewUser
-	model.DB.Where("Token = ?", req.Token).Find(&user)
+	user.Id = int64(utils.ParseToken(req.Token).Id) //将token解析为用户id
 	if user.Id != 0 {
 		mess := &model.Message{
 			Id:         int64(nums),
@@ -113,10 +115,8 @@ func (*UserService) SendMessage(ctx context.Context, req *services.RelationMessa
 		if err != nil {
 			resp.StatusCode = 0
 			resp.StatusMsg = "ok"
-
 		} else {
 			resp.StatusCode = 1
-			resp.StatusMsg = "error"
 		}
 	}
 	return nil

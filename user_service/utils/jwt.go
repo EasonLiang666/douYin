@@ -29,14 +29,14 @@ func GenerateToken(id uint) (string, error) {
 }
 
 // 验证用户token
-func ParseToken(token string) (*Claims, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (i interface{}, e error) {
+func ParseToken(token string) *Claims {
+	tokenClaims, _ := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (i interface{}, e error) {
 		return jwtSecret, nil
 	})
 	if tokenClaims != nil {
 		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
-			return claims, nil
+			return claims
 		}
 	}
-	return nil, err
+	return nil
 }

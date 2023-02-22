@@ -10,10 +10,15 @@ import (
 //获取用户信息
 func UserInfo(ginCtx *gin.Context) {
 	var userReq services.UserRequest
-	PanicIfUserError(ginCtx.Bind(&userReq))
+	userReq.UserId = ginCtx.Query("user_id")
+	//PanicIfUserError(ginCtx.Bind(&userReq))
+	//从上下文中获取由token拦截器获取到的userId也赋值给context上下文
+	strUserId := ginCtx.GetString("userId")
+	ctx := context.WithValue(ginCtx.Request.Context(), "userId", strUserId)
+	ginCtx.Request = ginCtx.Request.WithContext(ctx)
 	// 从gin.Key中取出服务实例
 	userService := ginCtx.Keys["userService"].(services.UserService)
-	userResp, err := userService.UserInfo(context.Background(), &userReq)
+	userResp, err := userService.UserInfo(ginCtx.Request.Context(), &userReq)
 	PanicIfUserError(err)
 	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
 	ginCtx.JSON(http.StatusOK, gin.H{
@@ -26,11 +31,18 @@ func UserInfo(ginCtx *gin.Context) {
 // 用户注册
 func UserRegister(ginCtx *gin.Context) {
 	var userRegisterReq services.UserRegisterRequest
-	PanicIfUserError(ginCtx.Bind(&userRegisterReq))
+	username := ginCtx.Query("username")
+	password := ginCtx.Query("password")
+	userRegisterReq.Password = password
+	userRegisterReq.Username = username
+	//PanicIfUserError(ginCtx.Bind(&userRegisterReq))
+	//从上下文中获取由token拦截器获取到的userId也赋值给context上下文
+	strUserId := ginCtx.GetString("userId")
+	ctx := context.WithValue(ginCtx.Request.Context(), "userId", strUserId)
+	ginCtx.Request = ginCtx.Request.WithContext(ctx)
 	// 从gin.Key中取出服务实例
 	userService := ginCtx.Keys["userService"].(services.UserService)
-
-	userResp, err := userService.UserRegister(context.Background(), &userRegisterReq)
+	userResp, err := userService.UserRegister(ginCtx.Request.Context(), &userRegisterReq)
 	PanicIfUserError(err)
 	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
 	ginCtx.JSON(http.StatusOK, gin.H{
@@ -44,9 +56,15 @@ func UserRegister(ginCtx *gin.Context) {
 // 用户登录
 func UserLogin(ginCtx *gin.Context) {
 	var userLoginReq services.UserLoginRequest
-	PanicIfUserError(ginCtx.Bind(&userLoginReq))
+	userLoginReq.Username = ginCtx.Query("username")
+	userLoginReq.Password = ginCtx.Query("password")
+	//PanicIfUserError(ginCtx.Bind(&userLoginReq))
+	//从上下文中获取由token拦截器获取到的userId也赋值给context上下文
+	strUserId := ginCtx.GetString("userId")
+	ctx := context.WithValue(ginCtx.Request.Context(), "userId", strUserId)
+	ginCtx.Request = ginCtx.Request.WithContext(ctx)
 	userService := ginCtx.Keys["userService"].(services.UserService)
-	userResp, err := userService.UserLogin(context.Background(), &userLoginReq)
+	userResp, err := userService.UserLogin(ginCtx.Request.Context(), &userLoginReq)
 	PanicIfUserError(err)
 	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
 	ginCtx.JSON(http.StatusOK, gin.H{
@@ -61,9 +79,15 @@ func UserLogin(ginCtx *gin.Context) {
 //消息记录
 func MessageChatRecord(ginCtx *gin.Context) {
 	var messageChatRequest services.MessageChatRequest
-	PanicIfUserError(ginCtx.Bind(&messageChatRequest))
+	messageChatRequest.ToUserId = ginCtx.Query("to_user_id")
+	messageChatRequest.Token = ginCtx.Query("token")
+	//PanicIfUserError(ginCtx.Bind(&messageChatRequest))
+	//从上下文中获取由token拦截器获取到的userId也赋值给context上下文
+	strUserId := ginCtx.GetString("userId")
+	ctx := context.WithValue(ginCtx.Request.Context(), "userId", strUserId)
+	ginCtx.Request = ginCtx.Request.WithContext(ctx)
 	userService := ginCtx.Keys["userService"].(services.UserService)
-	userResp, err := userService.MessageChatRecord(context.Background(), &messageChatRequest)
+	userResp, err := userService.MessageChatRecord(ginCtx.Request.Context(), &messageChatRequest)
 	PanicIfUserError(err)
 	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
 	ginCtx.JSON(http.StatusOK, gin.H{
@@ -77,11 +101,18 @@ func MessageChatRecord(ginCtx *gin.Context) {
 //发送消息
 func SendMessage(ginCtx *gin.Context) {
 	var relationMessageReq services.RelationMessageRequest
-	PanicIfUserError(ginCtx.Bind(&relationMessageReq))
+	relationMessageReq.Content = ginCtx.Query("content")
+	relationMessageReq.ToUserId = ginCtx.Query("to_user_id")
+	relationMessageReq.ActionType = ginCtx.Query("action_type")
+	relationMessageReq.Token = ginCtx.Query("token")
+	//PanicIfUserError(ginCtx.Bind(&relationMessageReq))
+	//从上下文中获取由token拦截器获取到的userId也赋值给context上下文token
+	strUserId := ginCtx.GetString("userId")
+	ctx := context.WithValue(ginCtx.Request.Context(), "userId", strUserId)
+	ginCtx.Request = ginCtx.Request.WithContext(ctx)
 	userService := ginCtx.Keys["userService"].(services.UserService)
-	userResp, err := userService.SendMessage(context.Background(), &relationMessageReq)
+	userResp, err := userService.SendMessage(ginCtx.Request.Context(), &relationMessageReq)
 	PanicIfUserError(err)
-	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
 	ginCtx.JSON(http.StatusOK, gin.H{
 		"status_code": userResp.StatusCode,
 		"status_msg":  userResp.StatusMsg,
