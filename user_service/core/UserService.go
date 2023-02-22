@@ -104,7 +104,7 @@ func (*UserService) SendMessage(ctx context.Context, req *services.RelationMessa
 	if user.Id != 0 {
 		mess := &model.Message{
 			Id:         int64(nums),
-			ToUserId:   req.ToUserId,        // 该消息接收者的id
+			ToUserId:   1,                   // 该消息接收者的id
 			FromUserId: user.Id,             // 该消息发送者的id
 			Content:    req.Content,         // 消息内容
 			CreateTime: time.Now().String(), // 消息创建时间
