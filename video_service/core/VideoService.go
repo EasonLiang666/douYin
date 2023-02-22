@@ -32,10 +32,23 @@ func (*VideoService) PublishList(ctx context.Context, req *services.PublishListR
 
 //点赞/取消点赞
 func (*VideoService) FavoriteAction(ctx context.Context, req *services.FavoriteActionRequest, resp *services.FavoriteActionResponse) error {
-	//strUserId := ctx.GetString()
-	////将int64 videoId转换为 string strVideoId
+	//strUserId := ctx.Value("key")
+	//// 类型断言
+	//if strUserId, ok := strUserId.(string); ok {
+	//	// 处理字符串类型的参数
+	//	userId, _ := strconv.ParseInt(strUserId, 10, 64)
+	//}
+	//
+	//strVideoId := req.GetVideoId()
+	//videoId, _ := strconv.ParseInt(strVideoId, 10, 64)
+	//strActionType := c.Query("action_type")
+	//actionType, _ := strconv.ParseInt(strActionType, 10, 64)
+	//
+	//userId := ctx.Value("key")
+	//////将int64 videoId转换为 string strVideoId
 	//strUserId := strconv.FormatInt(userId, 10)
-	////将int64 videoId转换为 string strVideoId
+	//////将int64 videoId转换为 string strVideoId
+	//videoId = req.GetVideoId()
 	//strVideoId := strconv.FormatInt(videoId, 10)
 	////将要操作数据库likes表的信息打入消息队列RmqLikeAdd或者RmqLikeDel
 	////拼接打入信息

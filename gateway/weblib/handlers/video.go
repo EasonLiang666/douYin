@@ -64,7 +64,12 @@ func FavoriteList(ginCtx *gin.Context) {
 	// 从gin.Key中取出服务实例
 	videoService := ginCtx.Keys["videoService"].(services.VideoService)
 
-	feedResp, err := videoService.FavoriteList(context.Background(), &favoriteListRequest)
+	//从上下文中获取由token拦截器获取到的userId也赋值给context上下文
+	strUserId := ginCtx.GetString("userId")
+	ctx := context.WithValue(ginCtx.Request.Context(), "userId", strUserId)
+	ginCtx.Request = ginCtx.Request.WithContext(ctx)
+
+	feedResp, err := videoService.FavoriteList(ginCtx.Request.Context(), &favoriteListRequest)
 	PanicIfUserError(err)
 	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
 	ginCtx.JSON(http.StatusOK, gin.H{
@@ -81,7 +86,12 @@ func CommentAction(ginCtx *gin.Context) {
 	// 从gin.Key中取出服务实例
 	videoService := ginCtx.Keys["videoService"].(services.VideoService)
 
-	feedResp, err := videoService.CommentAction(context.Background(), &commentActionRequest)
+	//从上下文中获取由token拦截器获取到的userId也赋值给context上下文
+	strUserId := ginCtx.GetString("userId")
+	ctx := context.WithValue(ginCtx.Request.Context(), "userId", strUserId)
+	ginCtx.Request = ginCtx.Request.WithContext(ctx)
+
+	feedResp, err := videoService.CommentAction(ginCtx.Request.Context(), &commentActionRequest)
 	PanicIfUserError(err)
 	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
 	ginCtx.JSON(http.StatusOK, gin.H{
@@ -98,7 +108,12 @@ func CommentList(ginCtx *gin.Context) {
 	// 从gin.Key中取出服务实例
 	videoService := ginCtx.Keys["videoService"].(services.VideoService)
 
-	feedResp, err := videoService.CommentList(context.Background(), &commentListRequest)
+	//从上下文中获取由token拦截器获取到的userId也赋值给context上下文
+	strUserId := ginCtx.GetString("userId")
+	ctx := context.WithValue(ginCtx.Request.Context(), "userId", strUserId)
+	ginCtx.Request = ginCtx.Request.WithContext(ctx)
+
+	feedResp, err := videoService.CommentList(ginCtx.Request.Context(), &commentListRequest)
 	PanicIfUserError(err)
 	//ginCtx.JSON(http.StatusOK, gin.H{"data": userResp})
 	ginCtx.JSON(http.StatusOK, gin.H{
