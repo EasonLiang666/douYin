@@ -112,6 +112,7 @@ func SendMessage(ginCtx *gin.Context) {
 	ginCtx.Request = ginCtx.Request.WithContext(ctx)
 	userService := ginCtx.Keys["userService"].(services.UserService)
 	userResp, err := userService.SendMessage(ginCtx.Request.Context(), &relationMessageReq)
+
 	PanicIfUserError(err)
 	ginCtx.JSON(http.StatusOK, gin.H{
 		"status_code": userResp.StatusCode,

@@ -3,6 +3,7 @@ package core
 import (
 	"context"
 	"math/rand"
+	"strconv"
 	"time"
 	"user_service/model"
 	"user_service/services"
@@ -100,13 +101,15 @@ func (*UserService) MessageChatRecord(ctx context.Context, req *services.Message
 func (*UserService) SendMessage(ctx context.Context, req *services.RelationMessageRequest, resp *services.RelationMessageResponse) error {
 	rand.Seed(time.Now().UnixNano())
 	// 生成一个介于 0 和 100 之间的不重复的随机数序列
+	//ctx.
 	nums := rand.Intn(1001)
 	var user model.NewUser
+	to_user, _ := strconv.ParseInt(req.ToUserId, 10, 64)
 	user.Id = int64(utils.ParseToken(req.Token).Id) //将token解析为用户id
 	if user.Id != 0 {
 		mess := &model.Message{
 			Id:         int64(nums),
-			ToUserId:   1,                   // 该消息接收者的id
+			ToUserId:   to_user,             // 该消息接收者的id
 			FromUserId: user.Id,             // 该消息发送者的id
 			Content:    req.Content,         // 消息内容
 			CreateTime: time.Now().String(), // 消息创建时间

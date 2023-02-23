@@ -27,6 +27,7 @@ func NewRouter(service ...interface{}) *gin.Engine {
 		douyin.GET("/user/", jwt.Auth(), handlers.UserInfo)
 		douyin.POST("/user/register/", handlers.UserRegister)
 		douyin.POST("/user/login/", handlers.UserLogin)
+
 		douyin.POST("/message/chat/", jwt.Auth(), handlers.MessageChatRecord)
 		douyin.POST("/message/action/", jwt.Auth(), handlers.SendMessage)
 		douyin.POST("/favorite/action/", jwt.Auth(), handlers.PublishAction)
